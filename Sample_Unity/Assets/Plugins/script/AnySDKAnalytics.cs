@@ -10,9 +10,9 @@ namespace anysdk {
 	public class AnySDKAnalytics : AnySDKProtocol
 	{
 		private static AnySDKAnalytics _instance;
-#if UNITY_ANDROID		
+		#if UNITY_ANDROID		
 		private AndroidJavaClass mAndroidJavaClass;
-#endif
+		#endif
 		
 		private static AnySDKAnalytics instance() {
 			if( null == _instance ) {
@@ -20,12 +20,12 @@ namespace anysdk {
 			}
 			return _instance;
 		}
-#if UNITY_ANDROID			
+		#if UNITY_ANDROID			
 		protected override  AndroidJavaClass getAndroidJavaClass() {
 			checkAndCreatePluginXAnalyticsAndroidClass();
 			return mAndroidJavaClass;
 		}
-#endif
+		#endif
 		
 		/**
 		 * start analytics session
@@ -136,52 +136,52 @@ namespace anysdk {
 		public static string getSDKVersion() {
 			return instance()._getSDKVersion();
 		}
-
+		
 		/**
 		 * set debugmode for plugin
 		 */
 		public static void setDebugMode(bool bDebug) {
 			instance()._setDebugMode(bDebug);
 		}
-
+		
 		private void checkAndCreatePluginXAnalyticsAndroidClass() {
-#if UNITY_ANDROID	
+			#if UNITY_ANDROID	
 			if( null == mAndroidJavaClass ) {
 				mAndroidJavaClass = new AndroidJavaClass( "com.anysdk.framework.unity.PluginXAnalytics" );
 			}
-#endif
+			#endif
 		}
 		
 		private void _startSession() {
-#if UNITY_ANDROID	
+			#if UNITY_ANDROID	
 			checkAndCreatePluginXAnalyticsAndroidClass();
 			mAndroidJavaClass.CallStatic( "startSession", new object[]{}); 
-#endif
+			#endif
 		}
 		
 		private void _stopSession() {
-#if UNITY_ANDROID	
+			#if UNITY_ANDROID	
 			checkAndCreatePluginXAnalyticsAndroidClass();
 			mAndroidJavaClass.CallStatic( "stopSession", new object[]{}); 
-#endif
+			#endif
 		}
 		
 		private void _setSessionContinueMillis( long millis ) {
-#if UNITY_ANDROID
+			#if UNITY_ANDROID
 			checkAndCreatePluginXAnalyticsAndroidClass();
 			mAndroidJavaClass.CallStatic( "setSessionContinueMillis", new object[]{millis}); 
-#endif
+			#endif
 		}
-	
+		
 		private void _logError( string errorId, string message ) {
-#if UNITY_ANDROID
+			#if UNITY_ANDROID
 			checkAndCreatePluginXAnalyticsAndroidClass();
 			mAndroidJavaClass.CallStatic( "logError", new object[]{errorId,message}); 
-#endif
+			#endif
 		}
-	
+		
 		private void _logEvent( string eventId, Dictionary<string,string> maps ) {
-#if UNITY_ANDROID
+			#if UNITY_ANDROID
 			checkAndCreatePluginXAnalyticsAndroidClass();
 			if(maps == null)
 			{
@@ -193,29 +193,29 @@ namespace anysdk {
 				mAndroidJavaClass.CallStatic( "logEvent", new object[]{eventId,mapParams}); 
 			}
 			
-
-#endif
+			
+			#endif
 		}
 		
 		private void _logTimedEventBegin( string eventId ) {
-#if UNITY_ANDROID
+			#if UNITY_ANDROID
 			checkAndCreatePluginXAnalyticsAndroidClass();
 			mAndroidJavaClass.CallStatic( "logTimedEventBegin", new object[]{eventId}); 
-#endif
+			#endif
 		}
 		
 		private void _logTimedEventEnd( string eventId ) {
-#if UNITY_ANDROID
+			#if UNITY_ANDROID
 			checkAndCreatePluginXAnalyticsAndroidClass();
 			mAndroidJavaClass.CallStatic( "logTimedEventEnd", new object[]{eventId}); 
-#endif
+			#endif
 		}
 		
 		private void _setCaptureUncaughtException( bool enabled ) {
-#if UNITY_ANDROID
+			#if UNITY_ANDROID
 			checkAndCreatePluginXAnalyticsAndroidClass();
 			mAndroidJavaClass.CallStatic( "setCaptureUncaughtException", new object[]{enabled}); 
-#endif
+			#endif
 		}
 	}
 }

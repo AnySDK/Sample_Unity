@@ -9,11 +9,11 @@ namespace anysdk {
 	 * 提供登录、调用渠道SDK内部函数等功能
 	 */
 	public class AnySDKUser : AnySDKProtocol {
-			
+		
 		private static AnySDKUser _instance;
-#if UNITY_ANDROID		
+		#if UNITY_ANDROID		
 		private AndroidJavaClass mAndroidJavaClass;
-#endif		
+		#endif		
 		private static AnySDKUser instance() {
 			if( null == _instance ) {
 				_instance = new AnySDKUser();
@@ -30,7 +30,7 @@ namespace anysdk {
 		void onDestory() {
 			AnySDKUser.unRegisterPluginXActionCallback( this );
 		}
-			
+		
 		/**
 		 * 初始化成功的回调
 		 * @param msg 消息内容
@@ -173,12 +173,12 @@ namespace anysdk {
 		public void onUserActionResult( string result ) {
 			//Todo			
 		}
-#if UNITY_ANDROID		
+		#if UNITY_ANDROID		
 		protected override  AndroidJavaClass getAndroidJavaClass() {
 			checkAndCreatePluginXUserAndroidClass();
 			return mAndroidJavaClass;
 		}
-#endif
+		#endif
 		
 		/**
 		 * 获取插件名称
@@ -208,30 +208,30 @@ namespace anysdk {
 		public static void setDebugMode(bool bDebug) {
 			instance()._setDebugMode(bDebug);
 		}
-
+		
 		/**
 		 * 登录
 		 */
 		public static void login() {
 			instance()._login();
 		}
-
+		
 		/**
 		 * 登录
 		 */
-		public static void login(string serverID, string serverIP = "") {
-			instance()._login(serverID,serverIP);
+		public static void login(string serverID, string oauthLoginServer = "") {
+			instance()._login(serverID,oauthLoginServer);
 		}
-	
-
-
+		
+		
+		
 		/**
 		 * id
 		 */
 		public static string getUserID() {
 			return instance()._getUserID();
 		}
-			
+		
 		/**
 		 * 确定是否支持某功能
 		 * @param functionName
@@ -282,36 +282,36 @@ namespace anysdk {
 			instance()._unRegisterPluginXActionCallback( callback );
 		}
 		
-		private void _login(string serverID, string serverIP = "") {
-
+		private void _login(string serverID, string oauthLoginServer = "") {
+			
 #if UNITY_ANDROID
 			checkAndCreatePluginXUserAndroidClass();
-			mAndroidJavaClass.CallStatic( "login", new object[]{serverID,serverIP}); 
-#endif
-		}
-
-		private void _login() {
-#if UNITY_ANDROID
-			checkAndCreatePluginXUserAndroidClass();
-			mAndroidJavaClass.CallStatic( "login", new object[]{}); 
-#endif
-		}
-
-		private string _getUserID() {
-#if UNITY_ANDROID
-			checkAndCreatePluginXUserAndroidClass();
-			return mAndroidJavaClass.CallStatic<string>( "getUserID", new object[]{}); 
-#else
-			return "";
+			mAndroidJavaClass.CallStatic( "login", new object[]{serverID,oauthLoginServer}); 
 #endif
 		}
 		
+		private void _login() {
+			#if UNITY_ANDROID
+			checkAndCreatePluginXUserAndroidClass();
+			mAndroidJavaClass.CallStatic( "login", new object[]{}); 
+			#endif
+		}
+		
+		private string _getUserID() {
+			#if UNITY_ANDROID
+			checkAndCreatePluginXUserAndroidClass();
+			return mAndroidJavaClass.CallStatic<string>( "getUserID", new object[]{}); 
+			#else
+			return "";
+			#endif
+		}
+		
 		private void checkAndCreatePluginXUserAndroidClass() {
-#if UNITY_ANDROID
+			#if UNITY_ANDROID
 			if( null == mAndroidJavaClass ) {
 				mAndroidJavaClass = new AndroidJavaClass( "com.anysdk.framework.unity.PluginXUser" );
 			}
-#endif
+			#endif
 		}
 	}
 }
