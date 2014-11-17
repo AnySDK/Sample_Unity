@@ -86,6 +86,13 @@ namespace anysdk {
 		public void onPayNowPaying( string msg ) {
 			//Todo
 		}
+
+		/**
+		 * 支付充值成功回调
+		 */
+		public void onPayRechargeSuccess( string msg ) {
+			//Todo
+		}
 		
 		/**
 		 * 未确定的请求会派发到这个接口
