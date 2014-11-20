@@ -165,7 +165,14 @@ namespace anysdk {
 		public void onUserAccountSwitchFail( string msg ) {
 			//Todo		
 		}
-		
+
+		/**
+		 * 打开游戏商店回调
+		 * @param msg 消息内容
+		 */
+		public void onUserOpenShop( string msg ) {
+			//Todo		
+		}
 		/**
 		 * 未确定的通知会派发到这个接口
 		 * @param result
