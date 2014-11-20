@@ -85,7 +85,7 @@ namespace anysdk {
 		 * 登录
 		 */
 		void login() {
-			AnySDKUser.login("1","http");
+			AnySDKUser.login("1");
 		}
 		
 		/**
