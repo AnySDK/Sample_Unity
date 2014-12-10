@@ -35,7 +35,7 @@ ipch/
 *.settings
 environment.sh
 #libs/
-bin/
+#bin/
 obj/
 gen/
 #.classpath
