@@ -1,324 +1,368 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Text;
 using System;
 
 namespace anysdk {
-	/**
-	 * 用户系统插件
-	 * 提供登录、调用渠道SDK内部函数等功能
-	 */
-	public class AnySDKUser : AnySDKProtocol {
+
+	public enum ToolBarPlace
+	{
+		kToolBarTopLeft = 1,/**< enum the toolbar is at topleft. */
+		kToolBarTopRight,/**< enum the toolbar is at topright. */
+		kToolBarMidLeft,/**< enum the toolbar is at midleft. */
+		kToolBarMidRight,/**< enum the toolbar is at midright. */
+		kToolBarBottomLeft,/**< enum the toolbar is at bottomleft. */
+		kToolBarBottomRight,/**< enum the toolbar is at bottomright. */
+	} ;
+
+	public enum UserActionResultCode
+	{
+		kInitSuccess = 0,/**< enum value is callback of succeeding in initing sdk. */
+		kInitFail,/**< enum  value is callback of failing to init sdk. */
+		kLoginSuccess,/**< enum value is callback of succeeding in login.*/
+		kLoginNetworkError,/**< enum value is callback of network error*/
+		kLoginNoNeed,/**< enum value is callback of no need login.*/
+		kLoginFail,/**< enum value is callback of failing to login. */
+		kLoginCancel,/**< enum value is callback of canceling to login. */
+		kLogoutSuccess,/**< enum value is callback of succeeding in logout. */
+		kLogoutFail,/**< enum value is callback of failing to logout. */
+		kPlatformEnter,/**< enum value is callback after enter platform. */
+		kPlatformBack,/**< enum value is callback after exit antiAddiction. */
+		kPausePage,/**< enum value is callback after exit pause page. */
+		kExitPage,/**< enum value is callback after exit exit page. */
+		kAntiAddictionQuery,/**< enum value is callback after querying antiAddiction. */
+		kRealNameRegister,/**< enum value is callback after registering realname. */
+		kAccountSwitchSuccess,/**< enum alue is callback of succeeding in switching account. */
+		kAccountSwitchFail,/**< enum value is callback of failing to switch account. */
+		kOpenShop,/**< enum value is callback of open the shop. */
 		
+		
+	} ;
+
+	public class AnySDKUser
+	{
 		private static AnySDKUser _instance;
-		#if UNITY_ANDROID		
-		private AndroidJavaClass mAndroidJavaClass;
-		#endif		
-		private static AnySDKUser instance() {
+		
+		public static AnySDKUser getInstance() {
 			if( null == _instance ) {
 				_instance = new AnySDKUser();
 			}
 			return _instance;
 		}
-		
-		void Awake()
+		/**
+    	 @brief User login
+    	 */
+
+		public  void login()
 		{
-			GameObject.DontDestroyOnLoad(gameObject);
-			AnySDKUser.registerPluginXActionCallback( this );
+			AnySDKUser_nativeLogin ();
 		}
-		
-		void onDestory() {
-			AnySDKUser.unRegisterPluginXActionCallback( this );
-		}
-		
 		/**
-		 * 初始化成功的回调
-		 * @param msg 消息内容
-		 */
-		public void onUserPluginXInitSuccess( string msg ) {
-			//Todo		
+     	@brief User login
+     	 	if the process of logining need to know  the param of server_id ,
+     	 	you can use the function
+     	 	and if you must change oauthloginserver, you can add the param of oauthLoginServer
+    	 @param server_id
+    	 @param oauthLoginServer
+    	*/
+
+		public  void login(string serverID,string authLoginServer = "")
+		{
+			AnySDKUser_nativeLoginWithParam (serverID,authLoginServer);
 		}
-		
 		/**
-		 * 初始化失败
-		 * @param msg 消息内容
-		 */
-		public void onUserPluginXInitFailed( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 登录成功的回调
-		 * @param msg 消息内容
-		 */
-		public void onUserLoginSuccess( string msg ) {
-			//Todo
-			Debug.Log (getUserID ());
-		}
-		
-		/**
-		 * 无法访问网络的回调
-		 * @param msg 消息内容
-		 */
-		public void onUserLoginNetworkError( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 登录失败，无需再次登录等回调
-		 * @param msg 消息内容
-		 */
-		public void onUserLoginNoNeed( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 登录失败的回调
-		 * @param msg 消息内容
-		 */
-		public void onUserLoginFailed( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 用户取消登录的回调
-		 * @param msg 消息内容
-		 */
-		public void onUserLoginCancel( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 用户注销成功的回调
-		 * @param msg 消息内容
-		 */
-		public void onUserLogoutSuccess( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 用户注销失败的回调
-		 */
-		public void onUserLogoutFailed( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 用户进入平台的回调
-		 * @param msg 消息内容
-		 */
-		public void onUserPlatformEnter( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 用户从平台返回的回调
-		 * @param msg 消息内容
-		 */
-		public void onUserPlatformBack( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 暂停页面的回调
-		 */
-		public void onUserPausePage( string msg ) {
-			//Todo	
-		}
-		
-		/**
-		 * 页面退出的回调
-		 * @param msg 消息内容
-		 */
-		public void onUserExitPage( string msg ) {
-			//Todo				
-		}
-		
-		/**
-		 * xxx
-		 * @param msg 消息内容
-		 */
-		public void onUserAntiAddictionQuery( string msg ) {
-			//Todo					
-		}
-		
-		/**
-		 * 实名注册的回调
-		 * @param msg 消息内容
-		 */
-		public void onUserRealnameRegister( string msg ) {
-			//Todo		
-		}
-		
-		/**
-		 * 账号切换成功的回调
-		 * @param msg 消息内容
-		 */
-		public void onUserAccountSwitchSuccess( string msg ) {
-			//Todo		
-		}
-		
-		/**
-		 * 账号切换失败的回调
-		 * @param msg 消息内容
-		 */
-		public void onUserAccountSwitchFail( string msg ) {
-			//Todo		
+   	 	 @brief Get user ID
+    	 @return If user logined, return value is userID;
+             else return value is empty string.
+    	 */
+
+		public  string getUserID()
+		{
+			StringBuilder userID = new StringBuilder();
+			AnySDKUser_nativeGetUserID (userID);
+			return userID.ToString();
 		}
 
 		/**
-		 * 打开游戏商店回调
-		 * @param msg 消息内容
-		 */
-		public void onUserOpenShop( string msg ) {
-			//Todo		
+   	 	 @brief Check whether the user logined or not
+    	 @return If user logined, return value is true;
+             else return value is false.
+    	 */
+
+		public  bool isLogined()
+		{
+			return AnySDKUser_nativeIsLogined ();
 		}
 		/**
-		 * 未确定的通知会派发到这个接口
-		 * @param result
-		 */
-		public void onUserActionResult( string result ) {
-			//Todo			
+     	@brief Check function the plugin support or not
+    	 @param the name of plugin
+    	 @return if the function support ,return true
+    	 	 	 else retur false
+    	 */
+
+		public  bool isFunctionSupported (string functionName)
+		{
+			return AnySDKUser_nativeIsFunctionSupported (functionName);
 		}
-		#if UNITY_ANDROID		
-		protected override  AndroidJavaClass getAndroidJavaClass() {
-			checkAndCreatePluginXUserAndroidClass();
-			return mAndroidJavaClass;
-		}
-		#endif
-		
-		/**
-		 * 获取插件名称
-		 */
-		public static string getPluginName() {
-			return instance()._getPluginName();
-		}
-		
-		/**
-		 * 获取插件版本号
-		 */
-		public static string getPluginVersion() {
-			return instance()._getPluginVersion();
-		}
-		
-		/**
-		 * 获取Sdk 版本号
-		 */
-		public static string getSDKVersion() {
-			return instance()._getSDKVersion();
-		}
-		
-		
 		/**
 		 * set debugmode for plugin
+		 * 
 		 */
-		public static void setDebugMode(bool bDebug) {
-			instance()._setDebugMode(bDebug);
+
+		public  void setDebugMode(bool bDebug)
+		{
+			AnySDKUser_nativeSetDebugMode (bDebug);
 		}
-		
+
 		/**
-		 * 登录
-		 */
-		public static void login() {
-			instance()._login();
+    	 @brief set pListener The callback object for user result
+    	 @param the MonoBehaviour object
+    	 @param the callback of function
+    	 */
+
+		public  void setListener(MonoBehaviour gameObject,string functionName)
+		{
+			AnySDKUtil.registerActionCallback (AnySDKType.User, gameObject, functionName);
 		}
-		
 		/**
-		 * 登录
-		 */
-		public static void login(string serverID, string oauthLoginServer = "") {
-			instance()._login(serverID,oauthLoginServer);
+     	@brief get plugin id
+   		 @return the plugin id
+    	 */
+
+		public string getPluginId()
+		{
+			StringBuilder pluginlId = new StringBuilder();
+			AnySDKUser_nativeGetPluginId (pluginlId);
+			return pluginlId.ToString();
 		}
-		
-		
-		
 		/**
-		 * id
-		 */
-		public static string getUserID() {
-			return instance()._getUserID();
+		 * Get Plugin version
+		 * 
+		 * @return string
+	 	*/
+
+		public  string getPluginVersion()
+		{
+			StringBuilder version = new StringBuilder();
+			AnySDKUser_nativeGetPluginVersion (version);
+			return version.ToString();
 		}
-		
+
 		/**
-		 * 确定是否支持某功能
-		 * @param functionName
-		 * @return true 支持  false 不支持
-		 */
-		public static bool isFunctionSupported( string functionName ) {
-			return instance()._isFunctionSupported( functionName );
+		 * Get SDK version
+		 * 
+		 * @return string
+	 	*/
+
+		public  string getSDKVersion()
+		{
+			StringBuilder version = new StringBuilder();
+			AnySDKUser_nativeGetSDKVersion (version);
+			return version.ToString();
 		}
-		
+
 		/**
-		 * 调用sdk中的函数
-		 * @param functionName 函数名称
-		 */
-		public static void callFunction( string functionName ) {
-			instance()._callFunction( functionName );
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param AnySDKParam param 
+    	 *@return void
+    	 */
+		public  void callFuncWithParam(string functionName, AnySDKParam param)
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			AnySDKUser_nativeCallFuncWithParam(functionName, list.ToArray(),list.Count);
 		}
-		
+
 		/**
-		 * Call sdk function
-		 * @param functionName
-		 * @param paramList
-		 */
-		public static void callFunction( string functionName, ArrayList paramList ) {
-			instance()._callFunction( functionName, paramList );
-		}
-		
-		/**
-		 * Call sdk function
-		 * @param functionName
-		 * @param datas
-		 */
-		public static void callFunction( string functionName, Dictionary<string, string> datas ) {
-			instance()._callFunction( functionName, datas );
-		}
-		
-		/**
-		 * 注册Action回调接口
-		 * 注：callback 必须实现PluginXActionCallback 接口
-		 */
-		static void registerPluginXActionCallback( MonoBehaviour callback ) {
-			instance()._registerPluginXActionCallback( callback );
-		}
-		
-		/**
-		 * 去掉注册的action回调接口
-		 */
-		static void unRegisterPluginXActionCallback( MonoBehaviour callback ) {
-			instance()._unRegisterPluginXActionCallback( callback );
-		}
-		
-		private void _login(string serverID, string oauthLoginServer = "") {
-			
-#if UNITY_ANDROID
-			checkAndCreatePluginXUserAndroidClass();
-			mAndroidJavaClass.CallStatic( "login", new object[]{serverID,oauthLoginServer}); 
-#endif
-		}
-		
-		private void _login() {
-			#if UNITY_ANDROID
-			checkAndCreatePluginXUserAndroidClass();
-			mAndroidJavaClass.CallStatic( "login", new object[]{}); 
-			#endif
-		}
-		
-		private string _getUserID() {
-			#if UNITY_ANDROID
-			checkAndCreatePluginXUserAndroidClass();
-			return mAndroidJavaClass.CallStatic<string>( "getUserID", new object[]{}); 
-			#else
-			return "";
-			#endif
-		}
-		
-		private void checkAndCreatePluginXUserAndroidClass() {
-			#if UNITY_ANDROID
-			if( null == mAndroidJavaClass ) {
-				mAndroidJavaClass = new AndroidJavaClass( "com.anysdk.framework.unity.PluginXUser" );
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param List<AnySDKParam> param 
+    	 *@return void
+    	 */
+		public  void callFuncWithParam(string functionName, List<AnySDKParam> param = null)
+		{
+			if (param == null) 
+			{
+				AnySDKUser_nativeCallFuncWithParam (functionName, null, 0);
+
+			} else {
+				AnySDKUser_nativeCallFuncWithParam (functionName, param.ToArray (), param.Count);
 			}
-			#endif
 		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param AnySDKParam param 
+    	 *@return int
+    	 */
+		public  int callIntFuncWithParam(string functionName, AnySDKParam param)
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			return AnySDKUser_nativeCallIntFuncWithParam(functionName, list.ToArray(),list.Count);
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param List<AnySDKParam> param 
+    	 *@return int
+    	 */
+		public  int  callIntFuncWithParam(string functionName, List<AnySDKParam> param = null)
+		{
+			if (param == null)
+			{
+				return AnySDKUser_nativeCallIntFuncWithParam (functionName, null, 0);
+
+			} else {
+				return AnySDKUser_nativeCallIntFuncWithParam (functionName, param.ToArray (), param.Count);
+			}
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param AnySDKParam param 
+    	 *@return float
+    	 */
+		public  float callFloatFuncWithParam(string functionName, AnySDKParam param)
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			return AnySDKUser_nativeCallFloatFuncWithParam(functionName, list.ToArray(),list.Count);
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param List<AnySDKParam> param 
+    	 *@return float
+    	 */
+		public  float callFloatFuncWithParam(string functionName, List<AnySDKParam> param = null)
+		{
+			if (param == null)
+			{
+				return AnySDKUser_nativeCallFloatFuncWithParam (functionName, null, 0);
+				
+			} else {
+				return AnySDKUser_nativeCallFloatFuncWithParam (functionName, param.ToArray (), param.Count);
+			}
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param AnySDKParam param 
+    	 *@return bool
+    	 */
+		public  bool callBoolFuncWithParam(string functionName, AnySDKParam param)
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			return AnySDKUser_nativeCallBoolFuncWithParam(functionName, list.ToArray(),list.Count);
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param List<AnySDKParam> param 
+    	 *@return bool
+    	 */
+		public  bool callBoolFuncWithParam(string functionName, List<AnySDKParam> param = null)
+		{
+			if (param == null)
+			{
+				return AnySDKUser_nativeCallBoolFuncWithParam (functionName, null, 0);
+				
+			} else {
+				return AnySDKUser_nativeCallBoolFuncWithParam (functionName, param.ToArray (), param.Count);
+			}
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param AnySDKParam param 
+    	 *@return string
+    	 */
+		public  string callStringFuncWithParam(string functionName, AnySDKParam param)
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			StringBuilder value = new StringBuilder();
+			AnySDKUser_nativeCallStringFuncWithParam(functionName, list.ToArray(),list.Count,value);
+			return value.ToString ();
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param List<AnySDKParam> param 
+    	 *@return string
+    	 */
+		public  string callStringFuncWithParam(string functionName, List<AnySDKParam> param = null)
+		{
+			StringBuilder value = new StringBuilder();
+			if (param == null)
+			{
+				AnySDKUser_nativeCallStringFuncWithParam (functionName, null, 0,value);
+				
+			} else {
+				AnySDKUser_nativeCallStringFuncWithParam (functionName, param.ToArray (), param.Count,value);
+			}
+			return value.ToString ();
+		}
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM,CallingConvention=CallingConvention.Cdecl)]
+		private static extern void AnySDKUser_RegisterExternalCallDelegate(IntPtr functionPointer);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKUser_nativeLogin();
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKUser_nativeLoginWithParam(string serverID, string authLoginServer);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKUser_nativeGetUserID(StringBuilder userID);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern bool AnySDKUser_nativeIsLogined();
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern bool AnySDKUser_nativeIsFunctionSupported(string functionName);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKUser_nativeSetDebugMode(bool bDebug);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKUser_nativeGetPluginId(StringBuilder pluginID);
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKUser_nativeGetPluginVersion(StringBuilder version);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKUser_nativeGetSDKVersion(StringBuilder version);
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKUser_nativeCallFuncWithParam(string functionName, AnySDKParam[] param,int count);
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern int AnySDKUser_nativeCallIntFuncWithParam(string functionName, AnySDKParam[] param,int count);
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern float AnySDKUser_nativeCallFloatFuncWithParam(string functionName, AnySDKParam[] param,int count);
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern bool AnySDKUser_nativeCallBoolFuncWithParam(string functionName, AnySDKParam[] param,int count);
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKUser_nativeCallStringFuncWithParam(string functionName, AnySDKParam[] param,int count,StringBuilder value);
 	}
+
 }
+
+
