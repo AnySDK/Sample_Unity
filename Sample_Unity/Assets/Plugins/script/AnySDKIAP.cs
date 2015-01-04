@@ -1,218 +1,335 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Text;
 using System;
 
 namespace anysdk {
-
-	/**
-	 * 支付插件
-	 */
-	public class AnySDKIAP : AnySDKProtocol
+	public enum PayResultCode
+	{
+		kPaySuccess = 0,/**< enum value is callback of succeeding in paying . */
+		kPayFail,/**< enum value is callback of failing to pay . */
+		kPayCancel,/**< enum value is callback of canceling to pay . */
+		kPayNetworkError,/**< enum value is callback of network error . */
+		kPayProductionInforIncomplete,/**< enum value is callback of incompleting info . */
+		kPayInitSuccess,/**< enum value is callback of succeeding in initing sdk . */
+		kPayInitFail,/**< enum value is callback of failing to init sdk . */
+		kPayNowPaying,/**< enum value is callback of paying now . */
+		kPayRechargeSuccess,/**< enum value is callback of  succeeding in recharging. */
+	} ;
+	/** @brief RequestResultCode enum, with inline docs */
+	public enum RequestResultCode
+	{
+		kRequestSuccess = 31000,/**< enum value is callback of succeeding in paying . */
+		kRequestFail/**< enum value is callback of failing to pay . */
+	} ;
+	public class AnySDKIAP
 	{
 		private static AnySDKIAP _instance;
-#if UNITY_ANDROID		
-		private AndroidJavaClass mAndroidJavaClass;
-#endif		
-		void Awake()
-		{
-			GameObject.DontDestroyOnLoad(gameObject);
-			registerPluginXActionCallback( this );
-		}
 		
-		void onDestory() {
-			unRegisterPluginXActionCallback( this );
-		}
-		
-		private static AnySDKIAP instance() {
+		public static AnySDKIAP getInstance() {
 			if( null == _instance ) {
 				_instance = new AnySDKIAP();
 			}
 			return _instance;
 		}
-		
-		/**
-		 * 支付成功
-		 */
-		public void onPaySuccess( string msg ) {
-			//Todo
-		}
-	
-		/**
-		 * 支付失败
-		 */
-		public void onPayFailed( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 支付取消
-		 */
-		public void onPayCancel( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 网络错误
-		 */
-		public void onPayNetworkError( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 支付未完成
-		 */
-		public void onPayProductionInforIncomplete( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 支付初始化成功
-		 */
-		public void onPayInitSuccess( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 支付初始化失败
-		 */
-		public void onPayPayInitFail( string msg ) {
-			//Todo
-		}
 
 		/**
-		 * 支付进行中
-		 */
-		public void onPayNowPaying( string msg ) {
-			//Todo
-		}
-		
-		/**
-		 * 未确定的请求会派发到这个接口
-		 * @param result
-		 */
-		public void onPayActionResult( string msg ) {
-			//Todo
-		}
-#if UNITY_ANDROID			
-		protected override  AndroidJavaClass getAndroidJavaClass() {
-			checkAndCreatePluginXIAPAndroidClass();
-			return mAndroidJavaClass;
-		}
-#endif
-		
-		/**
-		 * 获取订单ID
-		 */
-		public static String getOrderId() {
-			return instance()._getOrderId();
-		}
-		
-		/**
-		 * 购买道具
-		 */
-		public static void payForProduct( Dictionary<string,string> productInfos ) {
-			instance()._payForProduct( productInfos );
-		}
+   	 	@brief pay for product
+   		 @param info The info of product, must contains key:
+   		 @warning  Look at the manual of plugins.
 
-		/**
-		 * 重置支付状态
-		 */
-		public static void resetPayStatus() {
-			instance()._resetPayStatus();
+    	*/
+
+		public  void payForProduct(Dictionary<string,string> info,string pluginId = "")
+		{
+			string value = AnySDKUtil.dictionaryToString (info);
+			AnySDKIAP_nativePayForProduct(value,pluginId);
 		}
 		/**
-		 * 获取插件名称
-		 */
-		public static string getPluginName() {
-			return instance()._getPluginName();
+    	 @brief get order id
+    	 @return the order id
+    	 */
+
+		public  string getOrderId(string pluginId = "")
+		{
+			StringBuilder value = new StringBuilder (128);
+			AnySDKIAP_nativeGetOrderId (value,pluginId);
+			return value.ToString ();
 		}
-		
-		/**
-		 * 获取插件版本号
-		 */
-		public static string getPluginVersion() {
-			return instance()._getPluginVersion();
-		}
-		
-		/**
-		 * 获取Sdk 版本号
-		 */
-		public static string getSDKVersion() {
-			return instance()._getSDKVersion();
-		}
-		
 		/**
 		 * set debugmode for plugin
+		 * 
 		 */
-		public static void setDebugMode(bool bDebug) {
-			instance()._setDebugMode(bDebug);
+
+		public  void setDebugMode(bool bDebug)
+		{
+			AnySDKIAP_nativeSetDebugMode (bDebug);
+		}
+		/**
+    	 @brief set pListener The callback object for IAP result
+    	 @param the MonoBehaviour object
+    	 @param the callback of function
+    	 */
+
+		public  void setListener(MonoBehaviour gameObject,string functionName)
+		{
+			AnySDKUtil.registerActionCallback (AnySDKType.IAP, gameObject, functionName);
 		}
 
-			
 		/**
-		 * 调用渠道sdk中的函数
-		 * @param functionName 函数名称
-		 */
-		public static void callFunction( string functionName ) {
-			instance()._callFunction( functionName );
+    	 @brief get plugin ids
+     	@return List<string> the plugin ids
+     	*/
+
+		public List<string> getPluginId()
+		{
+			StringBuilder value = new StringBuilder ();
+			AnySDKIAP_nativeGetPluginId (value);
+			List<string> list = AnySDKUtil.StringToList (value.ToString());
+			return list;
+		}
+
+		/**
+   		 @brief change the state of paying
+    	 @param the state
+		*/
+
+		public void resetPayState()
+		{
+			AnySDKIAP_nativeResetPayState ();
+		}
+
+		/**
+		 * Get Plugin version
+		 * @param  pluginid
+		 * @return string
+	 	*/
+
+		public  string getPluginVersion(string pluginId = "")
+		{
+			StringBuilder version = new StringBuilder();
+			AnySDKIAP_nativeGetPluginVersion (version,pluginId);
+			return version.ToString();
+		}
+		/**
+		 * Get SDK version
+		 *@param  pluginid 
+		 * @return string
+	 	*/
+
+		public  string getSDKVersion(string pluginId = "")
+		{
+			StringBuilder version = new StringBuilder();
+			AnySDKIAP_nativeGetSDKVersion (version,pluginId);
+			return version.ToString();
 		}
 		
 		/**
-		 * 调用渠道sdk中的函数
-		 * @param functionName
-		 * @param paramList
-		 */
-		public static void callFunction( string functionName, ArrayList paramList ) {
-			instance()._callFunction( functionName, paramList );
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param  AnySDKParam param 
+   		 *@param  pluginid
+    	 *@return void
+    	 */
+		public  void callFuncWithParam(string functionName, AnySDKParam param,string pluginId = "")
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			AnySDKIAP_nativeCallFuncWithParam(functionName, list.ToArray(),list.Count,pluginId);
 		}
-#if UNITY_ANDROID			
-		private void checkAndCreatePluginXIAPAndroidClass() {
-			if( null == mAndroidJavaClass ) {
-				mAndroidJavaClass = new AndroidJavaClass( "com.anysdk.framework.unity.PluginXIAP" );
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param  List<AnySDKParam> param 
+   		 *@param  pluginid
+    	 *@return void
+    	 */
+		public  void callFuncWithParam(string functionName, List<AnySDKParam> param = null,string pluginId = "")
+		{
+			if (param == null) 
+			{
+				AnySDKIAP_nativeCallFuncWithParam (functionName, null, 0,pluginId);
+				
+			} else {
+				AnySDKIAP_nativeCallFuncWithParam (functionName, param.ToArray (), param.Count,pluginId);
 			}
 		}
-#endif
-		
-		
-		private string _getOrderId() {
-#if UNITY_ANDROID	
-			checkAndCreatePluginXIAPAndroidClass();
-			return mAndroidJavaClass.CallStatic<string>( "getOrderId", new object[]{}); 
-#else
-			return "";
-#endif
-		}
-		
-		private void _payForProduct( Dictionary<string,string> productInfos ) {
-#if UNITY_ANDROID	
-			checkAndCreatePluginXIAPAndroidClass();
-			AndroidJavaObject jProductInfos = AnySDKUtil.dictionary2JavaMap( productInfos );
-			mAndroidJavaClass.CallStatic( "payForProduct", new object[]{jProductInfos}); 
-#endif
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param  AnySDKParam param 
+   		 *@param  pluginid
+    	 *@return int
+    	 */
+		public  int callIntFuncWithParam(string functionName, AnySDKParam param,string pluginId = "")
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			return AnySDKIAP_nativeCallIntFuncWithParam(functionName, list.ToArray(),list.Count,pluginId);
 		}
 
-		private  void _resetPayStatus() {
-#if UNITY_ANDROID	
-			checkAndCreatePluginXIAPAndroidClass();
-			mAndroidJavaClass.CallStatic( "resetPayStatus", new object[]{}); 
-#endif
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param  List<AnySDKParam> param 
+   		 *@param  pluginid
+    	 *@return int
+    	 */
+		public  int  callIntFuncWithParam(string functionName, List<AnySDKParam> param = null,string pluginId = "")
+		{
+			if (param == null)
+			{
+				return AnySDKIAP_nativeCallIntFuncWithParam (functionName, null, 0,pluginId);
+				
+			} else {
+				return AnySDKIAP_nativeCallIntFuncWithParam (functionName, param.ToArray (), param.Count,pluginId);
+			}
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param  AnySDKParam param 
+   		 *@param  pluginid
+    	 *@return float
+    	 */
+		public  float callFloatFuncWithParam(string functionName, AnySDKParam param,string pluginId = "")
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			return AnySDKIAP_nativeCallFloatFuncWithParam(functionName, list.ToArray(),list.Count,pluginId);
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param  List<AnySDKParam> param 
+   		 *@param  pluginid
+    	 *@return float
+    	 */
+		public  float callFloatFuncWithParam(string functionName, List<AnySDKParam> param = null,string pluginId = "")
+		{
+			if (param == null)
+			{
+				return AnySDKIAP_nativeCallFloatFuncWithParam (functionName, null, 0,pluginId);
+				
+			} else {
+				return AnySDKIAP_nativeCallFloatFuncWithParam (functionName, param.ToArray (), param.Count,pluginId);
+			}
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param  AnySDKParam param 
+   		 *@param  pluginid
+    	 *@return bool
+    	 */
+		public  bool callBoolFuncWithParam(string functionName, AnySDKParam param,string pluginId = "")
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			return AnySDKIAP_nativeCallBoolFuncWithParam(functionName, list.ToArray(),list.Count,pluginId);
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param  List<AnySDKParam> param
+   		 *@param  pluginid
+    	 *@return bool
+    	 */
+		public  bool callBoolFuncWithParam(string functionName, List<AnySDKParam> param = null,string pluginId = "")
+		{
+			if (param == null)
+			{
+				return AnySDKIAP_nativeCallBoolFuncWithParam (functionName, null, 0,pluginId);
+				
+			} else {
+				return AnySDKIAP_nativeCallBoolFuncWithParam (functionName, param.ToArray (), param.Count,pluginId);
+			}
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param  AnySDKParam param 
+   		 *@param  pluginid 
+    	 *@return string
+    	 */
+		public  string callStringFuncWithParam(string functionName, AnySDKParam param,string pluginId = "")
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			StringBuilder value = new StringBuilder();
+			AnySDKIAP_nativeCallStringFuncWithParam(functionName, list.ToArray(),list.Count,value,pluginId);
+			return value.ToString ();
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param  List<AnySDKParam> param 
+   		 *@param  pluginid 
+    	 *@return string
+    	 */
+		public  string callStringFuncWithParam(string functionName, List<AnySDKParam> param = null,string pluginId = "")
+		{
+			StringBuilder value = new StringBuilder();
+			if (param == null)
+			{
+				AnySDKIAP_nativeCallStringFuncWithParam (functionName, null, 0,value,pluginId);
+				
+			} else {
+				AnySDKIAP_nativeCallStringFuncWithParam (functionName, param.ToArray (), param.Count,value,pluginId);
+			}
+			return value.ToString ();
 		}
 		
-		/**
-		 * 注册Action回调接口
-		 * 注：callback 必须实现PluginXActionCallback 接口
-		 */
-		static void registerPluginXActionCallback( MonoBehaviour callback ) {
-			instance()._registerPluginXActionCallback( callback );
-		}
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM,CallingConvention=CallingConvention.Cdecl)]
+		private static extern void AnySDKIAP_RegisterExternalCallDelegate(IntPtr functionPointer);
 		
-		/**
-		 * 去掉注册的action回调接口
-		 */
-		static void unRegisterPluginXActionCallback( MonoBehaviour callback ) {
-			instance()._unRegisterPluginXActionCallback( callback );
-		}
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKIAP_nativePayForProduct(string info,string pluginId);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKIAP_nativeGetOrderId(StringBuilder orderId,string pluginId);
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKIAP_nativeResetPayState();
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKIAP_nativeSetDebugMode(bool bDebug);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKIAP_nativeGetPluginId(StringBuilder pluginID);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKIAP_nativeGetPluginVersion(StringBuilder version,string pluginId);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKIAP_nativeGetSDKVersion(StringBuilder version,string pluginId);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKIAP_nativeCallFuncWithParam(string functionName, AnySDKParam[] param,int count,string pluginId);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern int AnySDKIAP_nativeCallIntFuncWithParam(string functionName, AnySDKParam[] param,int count,string pluginId);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern float AnySDKIAP_nativeCallFloatFuncWithParam(string functionName, AnySDKParam[] param,int count,string pluginId);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern bool AnySDKIAP_nativeCallBoolFuncWithParam(string functionName, AnySDKParam[] param,int count,string pluginId);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKIAP_nativeCallStringFuncWithParam(string functionName, AnySDKParam[] param,int count,StringBuilder value,string pluginId);
 	}
+	
 }
+
 

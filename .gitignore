@@ -82,7 +82,7 @@ Device-Release/
 
 #Ignore unity3d files
 /protocols/libAnySDKForUnity/Temp
-/Sample_Unity/Sample.apk
+/Sample_Unity/SampleForUnity.apk
 /Sample_Unity/Temp
 /Sample_Unity/Library
 *.meta

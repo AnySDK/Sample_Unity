@@ -1,222 +1,400 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Text;
 using System;
 
 namespace anysdk {
-	/**
-	 * 统计分析
-	 */
-	public class AnySDKAnalytics : AnySDKProtocol
+	public enum AccountType
+	{
+		ANONYMOUS,/**< enum value is anonymous typek. */
+		REGISTED,/**< enum value is registed type. */
+		SINA_WEIBO,/**< enum value is sineweibo type. */
+		TENCENT_WEIBO,/**< enum value is tecentweibo type */
+		QQ,/**< enum value is qq type */
+		QQ_WEIBO,/**< enum value is qqweibo type. */
+		ND91,/**< enum value is nd91 type. */
+
+	} ;
+	public enum AccountOperate
+	{
+		LOGIN,/**< enum value is the login operate. */
+		LOGOUT,/**< enum value is the logout operate. */
+		REGISTER,/**< enum value is the register operate. */
+
+	} ;
+	public enum AccountGender
+	{
+		MALE,/**< enum value is male. */
+		FEMALE,/**< enum value is female. */
+		UNKNOWN,/**< enum value is unknow. */
+
+		
+	} ;
+	public enum TaskType
+	{
+		GUIDE_LINE,/**< enum value is the guideline type.. */
+		MAIN_LINE,/**< enum value is the mainline type.. */
+		BRANCH_LINE,/**<enum value is the branchline type.. */
+		DAILY,/**< enum value is the daily type.. */
+		ACTIVITY,/**< enum value is the activity type.  */
+		OTHER,/**< enum value is other type. */
+
+	} ;
+	public class AnySDKAnalytics
 	{
 		private static AnySDKAnalytics _instance;
-		#if UNITY_ANDROID		
-		private AndroidJavaClass mAndroidJavaClass;
-		#endif
 		
-		private static AnySDKAnalytics instance() {
+		public static AnySDKAnalytics getInstance() {
 			if( null == _instance ) {
 				_instance = new AnySDKAnalytics();
 			}
 			return _instance;
 		}
-		#if UNITY_ANDROID			
-		protected override  AndroidJavaClass getAndroidJavaClass() {
-			checkAndCreatePluginXAnalyticsAndroidClass();
-			return mAndroidJavaClass;
-		}
-		#endif
-		
+
 		/**
-		 * start analytics session
-		 */
-		public static void startSession() {
-			instance()._startSession();
+     	@brief Start a new session.
+    	 */
+
+		public  void startSession()
+		{
+			AnySDKAnalytics_nativeStartSession ();
 		}
-		
+
 		/**
-		 * stop analytics session
-		 */
-		public static void stopSession() {
-			instance()._stopSession();
+     	@brief Stop a session.
+    	 @warning This interface only worked on android
+    	 */
+
+		public  void stopSession()
+		{
+			AnySDKAnalytics_nativeStopSession ();
 		}
-		
+
 		/**
-		 * set session
-		 */
-		public static void setSessionContinueMillis( long millis ) {
-			instance()._setSessionContinueMillis( millis );
+    	 @brief Set the timeout for expiring a session.
+    	 @param millis In milliseconds as the unit of time.
+    	 @note It must be invoked before calling startSession.
+    	 */
+
+		public  void setSessionContinueMillis(long millis)
+		{
+			AnySDKAnalytics_nativeSetSessionContinueMillis (millis);
+
 		}
-		
+
 		/**
-		 * log error
-		 */
-		public static void logError( string errorId, string message ) {
-			instance()._logError( errorId, message );
+     	@brief log an error
+     	@param errorId The identity of error
+     	@param message Extern message for the error
+     	*/
+
+		public  void  logError(string errorId, string message)
+		{
+			AnySDKAnalytics_nativeLogError (errorId, message);
 		}
-		
+
 		/**
-		 * log event
-		 */
-		public static void logEvent( string eventId, Dictionary<string,string> maps = null) {
-			instance()._logEvent( eventId, maps );
+    	 @brief log an event.
+     	 @param eventId The identity of event
+    	 @param paramMap Extern parameters of the event, use NULL if not needed.
+     	*/
+
+		public  void  logEvent (string errorId,Dictionary<string,string> paramMap = null)
+		{
+			string value;
+			if (paramMap == null) value = null; 
+			else value = AnySDKUtil.dictionaryToString (paramMap);
+			AnySDKAnalytics_nativeLogEvent (errorId,value);
 		}
-		
+
 		/**
-		 * log time event begin
-		 */
-		public static void logTimedEventBegin( string eventId ) {
-			instance()._logTimedEventBegin( eventId );
+     	@brief Track an event begin.
+     	@param eventId The identity of event
+     	*/
+
+		public  void  logTimedEventBegin (string errorId)
+		{
+			AnySDKAnalytics_nativeLogTimedEventBegin (errorId);
 		}
-		
+
 		/**
-		 * log time event end
-		 */
-		public static void logTimedEventEnd( string eventId ) {
-			instance()._logTimedEventBegin( eventId );
+    	 @brief Track an event end.
+     	@param eventId The identity of event
+    	 */
+
+		public  void  logTimedEventEnd (string eventId)
+		{
+			AnySDKAnalytics_nativeLogTimedEventEnd (eventId);
 		}
-		
+
 		/**
-		 * set catch exception switch
-		 */
-		public static void setCaptureUncaughtException( bool enabled ) {
-			instance()._setCaptureUncaughtException( enabled );
+     	@brief Whether to catch uncaught exceptions to server.
+    	 @warning This interface only worked on android.
+     	*/
+
+		public  void  setCaptureUncaughtException (bool enabled)
+		{
+			AnySDKAnalytics_nativeSetCaptureUncaughtException (enabled);
 		}
+
 		/**
-		 * 调用sdk中的函数
-		 * @param functionName 函数名称
-		 */
-		public static void callFunction( string functionName ) {
-			instance()._callFunction( functionName );
+     	@brief Check function the plugin support or not
+     	*/
+
+		public  bool  isFunctionSupported (string functionName)
+		{
+			return AnySDKAnalytics_nativeIsFunctionSupported (functionName);
 		}
-		
-		/**
-		 * 调用SDK中的函数
-		 * @param functionName 函数名称
-		 * @param paramList	参数值列表
-		 */
-		public static void callFunction( string functionName, ArrayList paramList ) {
-			instance()._callFunction( functionName, paramList );
-		}
-		
-		/**
-		 * Call sdk function
-		 * @param functionName
-		 * @param datas
-		 */
-		public static void callFunction( string functionName, Dictionary<string, string> datas ) {
-			instance()._callFunction( functionName, datas );
-		}
-		/**
-		 * 确定是否支持某功能
-		 * @param functionName
-		 * @return true 支持  false 不支持
-		 */
-		public static bool isFunctionSupported( string functionName ) {
-			return instance()._isFunctionSupported( functionName );
-		}
-		
-		/**
-		 * 获取插件名称
-		 */
-		public static string getPluginName() {
-			return instance()._getPluginName();
-		}
-		
-		/**
-		 * 获取插件版本号
-		 */
-		public static string getPluginVersion() {
-			return instance()._getPluginVersion();
-		}
-		
-		/**
-		 * 获取Sdk 版本号
-		 */
-		public static string getSDKVersion() {
-			return instance()._getSDKVersion();
-		}
-		
+
 		/**
 		 * set debugmode for plugin
+		 * 
 		 */
-		public static void setDebugMode(bool bDebug) {
-			instance()._setDebugMode(bDebug);
+
+		public  void setDebugMode(bool bDebug)
+		{
+			AnySDKAnalytics_nativeSetDebugMode (bDebug);
 		}
 		
-		private void checkAndCreatePluginXAnalyticsAndroidClass() {
-			#if UNITY_ANDROID	
-			if( null == mAndroidJavaClass ) {
-				mAndroidJavaClass = new AndroidJavaClass( "com.anysdk.framework.unity.PluginXAnalytics" );
-			}
-			#endif
+		/**
+		 * Get Plugin version
+		 * 
+		 * @return string
+	 	*/
+
+		public  string getPluginVersion()
+		{
+			StringBuilder version = new StringBuilder();
+			AnySDKAnalytics_nativeGetPluginVersion (version);
+			return version.ToString();
+		}
+
+		/**
+		 * Get SDK version
+		 * 
+		 * @return string
+	 	*/
+
+		public  string getSDKVersion()
+		{
+			StringBuilder version = new StringBuilder();
+			AnySDKAnalytics_nativeGetSDKVersion (version);
+			return version.ToString();
 		}
 		
-		private void _startSession() {
-			#if UNITY_ANDROID	
-			checkAndCreatePluginXAnalyticsAndroidClass();
-			mAndroidJavaClass.CallStatic( "startSession", new object[]{}); 
-			#endif
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param AnySDKParam param 
+    	 *@return void
+    	 */
+		public  void callFuncWithParam(string functionName, AnySDKParam param)
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			AnySDKAnalytics_nativeCallFuncWithParam(functionName, list.ToArray(),list.Count);
 		}
-		
-		private void _stopSession() {
-			#if UNITY_ANDROID	
-			checkAndCreatePluginXAnalyticsAndroidClass();
-			mAndroidJavaClass.CallStatic( "stopSession", new object[]{}); 
-			#endif
-		}
-		
-		private void _setSessionContinueMillis( long millis ) {
-			#if UNITY_ANDROID
-			checkAndCreatePluginXAnalyticsAndroidClass();
-			mAndroidJavaClass.CallStatic( "setSessionContinueMillis", new object[]{millis}); 
-			#endif
-		}
-		
-		private void _logError( string errorId, string message ) {
-			#if UNITY_ANDROID
-			checkAndCreatePluginXAnalyticsAndroidClass();
-			mAndroidJavaClass.CallStatic( "logError", new object[]{errorId,message}); 
-			#endif
-		}
-		
-		private void _logEvent( string eventId, Dictionary<string,string> maps ) {
-			#if UNITY_ANDROID
-			checkAndCreatePluginXAnalyticsAndroidClass();
-			if(maps == null)
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param List<AnySDKParam> param 
+    	 *@return void
+    	 */
+		public  void callFuncWithParam(string functionName, List<AnySDKParam> param = null)
+		{
+			if (param == null) 
 			{
-				mAndroidJavaClass.CallStatic( "logEvent", new object[]{eventId});
+				AnySDKAnalytics_nativeCallFuncWithParam (functionName, null, 0);
+				
+			} else {
+				AnySDKAnalytics_nativeCallFuncWithParam (functionName, param.ToArray (), param.Count);
 			}
-			else
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param AnySDKParam param 
+    	 *@return int
+    	 */
+		public  int callIntFuncWithParam(string functionName, AnySDKParam param)
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			return AnySDKAnalytics_nativeCallIntFuncWithParam(functionName, list.ToArray(),list.Count);
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param List<AnySDKParam> param 
+    	 *@return int
+    	 */
+		public  int  callIntFuncWithParam(string functionName, List<AnySDKParam> param = null)
+		{
+			if (param == null)
 			{
-				AndroidJavaObject mapParams = AnySDKUtil.dictionary2JavaMap( maps );
-				mAndroidJavaClass.CallStatic( "logEvent", new object[]{eventId,mapParams}); 
+				return AnySDKAnalytics_nativeCallIntFuncWithParam (functionName, null, 0);
+				
+			} else {
+				return AnySDKAnalytics_nativeCallIntFuncWithParam (functionName, param.ToArray (), param.Count);
 			}
-			
-			
-			#endif
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param AnySDKParam param 
+    	 *@return float
+    	 */
+		public  float callFloatFuncWithParam(string functionName, AnySDKParam param)
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			return AnySDKAnalytics_nativeCallFloatFuncWithParam(functionName, list.ToArray(),list.Count);
 		}
 		
-		private void _logTimedEventBegin( string eventId ) {
-			#if UNITY_ANDROID
-			checkAndCreatePluginXAnalyticsAndroidClass();
-			mAndroidJavaClass.CallStatic( "logTimedEventBegin", new object[]{eventId}); 
-			#endif
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param List<AnySDKParam> param 
+    	 *@return float
+    	 */
+		public  float callFloatFuncWithParam(string functionName, List<AnySDKParam> param = null)
+		{
+			if (param == null)
+			{
+				return AnySDKAnalytics_nativeCallFloatFuncWithParam (functionName, null, 0);
+				
+			} else {
+				return AnySDKAnalytics_nativeCallFloatFuncWithParam (functionName, param.ToArray (), param.Count);
+			}
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param AnySDKParam param 
+    	 *@return string
+    	 */
+		public  bool callBoolFuncWithParam(string functionName, AnySDKParam param)
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			return AnySDKAnalytics_nativeCallBoolFuncWithParam(functionName, list.ToArray(),list.Count);
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param List<AnySDKParam> param 
+    	 *@return string
+    	 */
+		public  bool callBoolFuncWithParam(string functionName, List<AnySDKParam> param = null)
+		{
+			if (param == null)
+			{
+				return AnySDKAnalytics_nativeCallBoolFuncWithParam (functionName, null, 0);
+				
+			} else {
+				return AnySDKAnalytics_nativeCallBoolFuncWithParam (functionName, param.ToArray (), param.Count);
+			}
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param List<AnySDKParam> param 
+    	 *@return string
+    	 */
+		public  string callStringFuncWithParam(string functionName, AnySDKParam param)
+		{
+			List<AnySDKParam> list = new List<AnySDKParam> ();
+			list.Add (param);
+			StringBuilder value = new StringBuilder();
+			AnySDKAnalytics_nativeCallStringFuncWithParam(functionName, list.ToArray(),list.Count,value);
+			return value.ToString ();
+		}
+
+		/**
+    	 *@brief methods for reflections
+   	 	 *@param function name
+   		 *@param List<AnySDKParam> param 
+    	 *@return string
+    	 */
+		public  string callStringFuncWithParam(string functionName, List<AnySDKParam> param = null)
+		{
+			StringBuilder value = new StringBuilder();
+			if (param == null)
+			{
+				AnySDKAnalytics_nativeCallStringFuncWithParam (functionName, null, 0,value);
+				
+			} else {
+				AnySDKAnalytics_nativeCallStringFuncWithParam (functionName, param.ToArray (), param.Count,value);
+			}
+			return value.ToString ();
 		}
 		
-		private void _logTimedEventEnd( string eventId ) {
-			#if UNITY_ANDROID
-			checkAndCreatePluginXAnalyticsAndroidClass();
-			mAndroidJavaClass.CallStatic( "logTimedEventEnd", new object[]{eventId}); 
-			#endif
-		}
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeStartSession();
 		
-		private void _setCaptureUncaughtException( bool enabled ) {
-			#if UNITY_ANDROID
-			checkAndCreatePluginXAnalyticsAndroidClass();
-			mAndroidJavaClass.CallStatic( "setCaptureUncaughtException", new object[]{enabled}); 
-			#endif
-		}
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeStopSession();
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeSetSessionContinueMillis(long milli);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeLogError(string errorId, string message);
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeLogEvent(string eventId, string message);
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeLogTimedEventBegin(string eventId);
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeLogTimedEventEnd(string eventId);
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeSetCaptureUncaughtException(bool enabled);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern bool AnySDKAnalytics_nativeIsFunctionSupported(string functionName);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeSetDebugMode(bool bDebug);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeGetPluginId(StringBuilder pluginID);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeGetPluginVersion(StringBuilder version);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeGetSDKVersion(StringBuilder version);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeCallFuncWithParam(string functionName, AnySDKParam[] param,int count);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern int AnySDKAnalytics_nativeCallIntFuncWithParam(string functionName, AnySDKParam[] param,int count);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern float AnySDKAnalytics_nativeCallFloatFuncWithParam(string functionName, AnySDKParam[] param,int count);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern bool AnySDKAnalytics_nativeCallBoolFuncWithParam(string functionName, AnySDKParam[] param,int count);
+		
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern void AnySDKAnalytics_nativeCallStringFuncWithParam(string functionName, AnySDKParam[] param,int count,StringBuilder value);
 	}
+	
 }
+
 
