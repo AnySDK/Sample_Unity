@@ -1,0 +1,33 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Plugins/script/AnySDKParam.cs">
+    <Files>
+      <File FileName="Assets/Plugins/script/AnySDKUtil.cs" Line="64" Column="41" />
+      <File FileName="Assets/Plugins/script/AnySDKAnalytics.cs" Line="227" Column="83" />
+      <File FileName="Assets/Plugins/script/AnySDKIAP.cs" Line="187" Column="66" />
+      <File FileName="Assets/Plugins/script/AnySDKPush.cs" Line="193" Column="61" />
+      <File FileName="Assets/Plugins/script/AnySDKShare.cs" Line="160" Column="60" />
+      <File FileName="Assets/Plugins/script/AnySDKSocial.cs" Line="227" Column="3" />
+      <File FileName="Assets/Plugins/script/AnySDKParam.cs" Line="77" Column="4" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Assembly-CSharp" expanded="True" />
+          <Node name="Assembly-CSharp-firstpass" expanded="True">
+            <Node name="Plugins" expanded="True">
+              <Node name="Android" expanded="True" />
+              <Node name="script" expanded="True">
+                <Node name="AnySDKAnalytics.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
