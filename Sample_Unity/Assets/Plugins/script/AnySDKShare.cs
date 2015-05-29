@@ -12,6 +12,7 @@ namespace anysdk {
 		kShareFail,/**< enum value is callback of failing to share . */
 		kShareCancel,/**< enum value is callback of canceling to share . */
 		kShareNetworkError,/**< enum value is callback of network error . */
+		kShareExtension = 10000 /**< enum value is  extension code . */
 	};
 	public class AnySDKShare
 	{
@@ -48,7 +49,7 @@ namespace anysdk {
 		 * set debugmode for plugin
 		 * 
 		 */
-
+		[Obsolete("This interface is obsolete!",false)]
 		public  void setDebugMode(bool bDebug)
 		{
 #if UNITY_ANDROID ||  UNITY_IOS 
