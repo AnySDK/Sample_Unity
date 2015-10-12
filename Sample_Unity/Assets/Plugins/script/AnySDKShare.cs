@@ -36,12 +36,26 @@ namespace anysdk {
 		public  void share(Dictionary<string,string> shareInfo)
 		{
 
-#if UNITY_ANDROID ||  UNITY_IOS 
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS) 
 			string info = AnySDKUtil.dictionaryToString (shareInfo);
 			Debug.Log("share   " + info);
 			AnySDKShare_nativeShare (info );
 #else
 			Debug.Log("This platform does not support!");
+#endif
+		}
+
+		/**
+     	@brief Check function the plugin support or not
+     	*/
+		
+		public  bool  isFunctionSupported (string functionName)
+		{
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS) 
+			return AnySDKShare_nativeIsFunctionSupported (functionName);
+#else
+			Debug.Log("This platform does not support!");
+			return false;
 #endif
 		}
 
@@ -52,7 +66,7 @@ namespace anysdk {
 		[Obsolete("This interface is obsolete!",false)]
 		public  void setDebugMode(bool bDebug)
 		{
-#if UNITY_ANDROID ||  UNITY_IOS 
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS) 
 			AnySDKShare_nativeSetDebugMode (bDebug);
 #else
 			Debug.Log("This platform does not support!");
@@ -84,7 +98,7 @@ namespace anysdk {
 	 	*/
 		public  string getPluginVersion()
 		{
-#if UNITY_ANDROID ||  UNITY_IOS 
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS) 
 			StringBuilder version = new StringBuilder();
 			version.Capacity = AnySDKUtil.MAX_CAPACITY_NUM;
 			AnySDKShare_nativeGetPluginVersion (version);
@@ -103,7 +117,7 @@ namespace anysdk {
 	 	*/
 		public  string getSDKVersion()
 		{
-#if UNITY_ANDROID ||  UNITY_IOS 
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS) 
 			StringBuilder version = new StringBuilder();
 			version.Capacity = AnySDKUtil.MAX_CAPACITY_NUM;
 			AnySDKShare_nativeGetSDKVersion (version);
@@ -123,7 +137,7 @@ namespace anysdk {
 		
 		public  void callFuncWithParam(string functionName, AnySDKParam param)
 		{
-#if UNITY_ANDROID ||  UNITY_IOS  
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS)  
 			List<AnySDKParam> list = new List<AnySDKParam> ();
 			list.Add (param);
 			AnySDKShare_nativeCallFuncWithParam(functionName, list.ToArray(),list.Count);
@@ -140,7 +154,7 @@ namespace anysdk {
     	 */
 		public  void callFuncWithParam(string functionName, List<AnySDKParam> param = null)
 		{
-#if UNITY_ANDROID ||  UNITY_IOS 
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS) 
 			if (param == null) 
 			{
 				AnySDKShare_nativeCallFuncWithParam (functionName, null, 0);
@@ -161,7 +175,7 @@ namespace anysdk {
     	 */
 		public  int callIntFuncWithParam(string functionName, AnySDKParam param)
 		{
-#if UNITY_ANDROID ||  UNITY_IOS  
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS)  
 			List<AnySDKParam> list = new List<AnySDKParam> ();
 			list.Add (param);
 			return AnySDKShare_nativeCallIntFuncWithParam(functionName, list.ToArray(),list.Count);
@@ -179,7 +193,7 @@ namespace anysdk {
     	 */
 		public  int  callIntFuncWithParam(string functionName, List<AnySDKParam> param = null)
 		{
-#if UNITY_ANDROID ||  UNITY_IOS  
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS)  
 			if (param == null)
 			{
 				return AnySDKShare_nativeCallIntFuncWithParam (functionName, null, 0);
@@ -201,7 +215,7 @@ namespace anysdk {
     	 */
 		public  float callFloatFuncWithParam(string functionName, AnySDKParam param)
 		{
-#if UNITY_ANDROID ||  UNITY_IOS 
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS) 
 			List<AnySDKParam> list = new List<AnySDKParam> ();
 			list.Add (param);
 			return AnySDKShare_nativeCallFloatFuncWithParam(functionName, list.ToArray(),list.Count);
@@ -219,7 +233,7 @@ namespace anysdk {
     	 */
 		public  float callFloatFuncWithParam(string functionName, List<AnySDKParam> param = null)
 		{
-#if UNITY_ANDROID ||  UNITY_IOS 
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS) 
 			if (param == null)
 			{
 				return AnySDKShare_nativeCallFloatFuncWithParam (functionName, null, 0);
@@ -241,7 +255,7 @@ namespace anysdk {
     	 */
 		public  bool callBoolFuncWithParam(string functionName, AnySDKParam param)
 		{
-#if UNITY_ANDROID ||  UNITY_IOS 
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS) 
 			List<AnySDKParam> list = new List<AnySDKParam> ();
 			list.Add (param);
 			return AnySDKShare_nativeCallBoolFuncWithParam(functionName, list.ToArray(),list.Count);
@@ -259,7 +273,7 @@ namespace anysdk {
     	 */
 		public  bool callBoolFuncWithParam(string functionName, List<AnySDKParam> param = null)
 		{
-#if UNITY_ANDROID ||  UNITY_IOS 
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS) 
 			if (param == null)
 			{
 				return AnySDKShare_nativeCallBoolFuncWithParam (functionName, null, 0);
@@ -281,7 +295,7 @@ namespace anysdk {
     	 */
 		public  string callStringFuncWithParam(string functionName, AnySDKParam param)
 		{
-#if UNITY_ANDROID ||  UNITY_IOS 
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS) 
 			List<AnySDKParam> list = new List<AnySDKParam> ();
 			list.Add (param);
 			StringBuilder value = new StringBuilder();
@@ -302,7 +316,7 @@ namespace anysdk {
     	 */
 		public  string callStringFuncWithParam(string functionName, List<AnySDKParam> param = null)
 		{
-#if UNITY_ANDROID ||  UNITY_IOS 
+#if !UNITY_EDITOR &&( UNITY_ANDROID ||  UNITY_IOS) 
 			StringBuilder value = new StringBuilder();
 			value.Capacity = AnySDKUtil.MAX_CAPACITY_NUM;
 			if (param == null)
@@ -327,6 +341,9 @@ namespace anysdk {
 
 		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
 		private static extern void AnySDKShare_nativeShare(string info);
+
+		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
+		private static extern bool AnySDKShare_nativeIsFunctionSupported(string functionName);
 	
 		[DllImport(AnySDKUtil.ANYSDK_PLATFORM)]
 		private static extern void AnySDKShare_nativeSetDebugMode(bool bDebug);

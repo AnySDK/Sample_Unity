@@ -1,0 +1,42 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Plugins/script/AnySDKUtil.cs.REMOTE.10862.cs">
+    <Files>
+      <File FileName="Assets/Init.cs" Line="1" Column="1" />
+      <File FileName="Assets/TestIAPPlugin.cs" Line="1" Column="1" />
+      <File FileName="../../Framework/protocols/proj.unity3d/libAnySDKForUnity/Assets/Plugins/script/AnySDK.cs" Line="1" Column="1" />
+      <File FileName="../../Framework/protocols/proj.unity3d/libAnySDKForUnity/Assets/Plugins/script/AnySDKAds.cs" Line="1" Column="1" />
+      <File FileName="../../Framework/protocols/proj.unity3d/libAnySDKForUnity/Assets/Plugins/script/AnySDKUser.cs" Line="1" Column="1" />
+      <File FileName="../../Framework/protocols/proj.unity3d/libAnySDKForUnity/Assets/Plugins/script/AnySDKIAP.cs" Line="1" Column="1" />
+      <File FileName="../../Framework/protocols/proj.unity3d/libAnySDKForUnity/Assets/Plugins/script/AnySDKUtil.cs" Line="150" Column="1" />
+      <File FileName="Assets/TestUserPlugin.cs" Line="217" Column="6" />
+      <File FileName="Assets/Test.cs" Line="1" Column="1" />
+      <File FileName="Assets/TestAdsPlugin.cs" Line="1" Column="1" />
+      <File FileName="Assets/TestAnalyticsPlugin.cs" Line="217" Column="14" />
+      <File FileName="Assets/TestPushPlugin.cs" Line="1" Column="1" />
+      <File FileName="Assets/TestSharePlugin.cs" Line="1" Column="1" />
+      <File FileName="Assets/TestSocialPlugin.cs" Line="1" Column="1" />
+      <File FileName="Assets/TestRECPlugin.cs" Line="208" Column="31" />
+      <File FileName="Assets/TestCrashPlugin.cs" Line="42" Column="4" />
+      <File FileName="Assets/Plugins/script/AnySDKREC.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDKCrash.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDKPush.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDKUser.cs" Line="61" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDKCustom.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDK.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDKUtil.cs" Line="23" Column="37" />
+      <File FileName="Assets/Plugins/Android/AndroidManifest.xml" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDKIAP.cs" Line="1" Column="1" />
+      <File FileName="../../../../../../private/var/folders/sc/8kc0w6tn6k98rt_py50x2r280000gn/T/Sample_Unity_Assets_Plugins_script_AnySDKUtil_Before_f21641f89370d4a636ec0e1bb9b07976e2ee3897.cs" Line="124" Column="4" />
+      <File FileName="../../../../../../private/var/folders/sc/8kc0w6tn6k98rt_py50x2r280000gn/T/Sample_Unity_Assets_TestAnalyticsPlugin_Before_f21641f89370d4a636ec0e1bb9b07976e2ee3897.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDKUtil.cs.BACKUP.10862.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDKUtil.cs.BASE.10862.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDKUtil.cs.LOCAL.10862.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDKUtil.cs.REMOTE.10862.cs" Line="10" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
