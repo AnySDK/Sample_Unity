@@ -44,6 +44,12 @@ namespace anysdk {
 			case (int)RECResultCode.kRECResumeRecording://恢复录制
 				Debug.Log("kRECResumeRecording \n");
 				break;
+			case (int)RECResultCode.kRECEnterSDKPage://进入SDK页面
+				Debug.Log("kRECEnterSDKPage \n");
+				break;
+			case (int)RECResultCode.kRECQuitSDKPage://退出SDK页面
+				Debug.Log("kRECQuitSDKPage \n");
+				break;
 			case (int)RECResultCode.kRECShareSuccess://视频分享成功
 				Debug.Log("kRECShareSuccess \n");
 				break;
@@ -149,7 +155,8 @@ namespace anysdk {
 
 		void share() {
 			Dictionary<string,string> info = new Dictionary<string, string>();
-			info["title"] = "AnySDK是一个神奇的SDK";
+			info["Video_Title"] = "AnySDK";
+			info["Video_Desc"] = "AnySDK是一个神奇的SDK";
 			AnySDKREC.getInstance().share(info);
 		}
 
