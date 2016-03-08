@@ -145,7 +145,7 @@ namespace anysdk {
 		 * 登录
 		 */
 		void login() {
-			_instance.login("1","http://oauth.dsfdsfds.info/api/OauthLoginDemo/Login.php");
+			_instance.login();
 		}
 		
 		/**
