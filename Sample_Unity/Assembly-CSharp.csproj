@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Init.cs" />
      <Compile Include="Assets\Test.cs" />
+     <Compile Include="Assets\TestAdTrackingPlugin.cs" />
      <Compile Include="Assets\TestAdsPlugin.cs" />
      <Compile Include="Assets\TestAnalyticsPlugin.cs" />
      <Compile Include="Assets\TestCrashPlugin.cs" />
@@ -58,9 +59,9 @@
      <Compile Include="Assets\TestSocialPlugin.cs" />
      <Compile Include="Assets\TestUserPlugin.cs" />
      <None Include="Assets\Plugins\Android\res\layout\plugin_ads.xml" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\Plugins\Android\res\layout\plugin_login.xml" />
      <None Include="Assets\Plugins\Android\res\values\plugin_string.xml" />
-     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\Plugins\Android\res\values-en\plugin_string.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity4.70/Unity.app/Contents/UnityExtensions/Unity/GUISystem/4.7.0/Standalone/UnityEngine.UI.dll</HintPath>

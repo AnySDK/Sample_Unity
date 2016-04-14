@@ -117,9 +117,9 @@ namespace anysdk {
 
 
 
-			if (GUI.Button (new Rect (5, 605, Screen.width - 10, 70), "submitLoginAnySDKRole"))
+			if (GUI.Button (new Rect (5, 605, Screen.width - 10, 70), "submitLoginGameRole"))
 			{
-				submitLoginAnySDKRole ();
+				submitLoginGameRole ();
 			}
 
 			if(GUI.Button(new Rect(5, 680, Screen.width - 10, 70),"return" ))
@@ -215,7 +215,7 @@ namespace anysdk {
 		/**
 		 * 把游戏数据传递到SDK服务端
 		 */
-		void submitLoginAnySDKRole() {
+		void submitLoginGameRole() {
 			if( _instance.isFunctionSupported( "submitLoginGameRole" ) ) {
 				Dictionary<string, string> userInfo = new Dictionary<string, string>();
 				userInfo["roleId"] = "123456";
