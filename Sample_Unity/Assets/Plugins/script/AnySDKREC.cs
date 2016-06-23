@@ -114,9 +114,9 @@ namespace anysdk {
 
 		public  void setListener(MonoBehaviour gameObject,string functionName)
 		{
-#if UNITY_ANDROID
+#if !UNITY_EDITOR && UNITY_ANDROID
 			AnySDKUtil.registerActionCallback (AnySDKType.REC, gameObject, functionName);
-#elif UNITY_IOS
+#elif !UNITY_EDITOR && UNITY_IOS
 			string gameObjectName = gameObject.gameObject.name;
 			AnySDKREC_nativeSetListener(gameObjectName,functionName);
 #else
