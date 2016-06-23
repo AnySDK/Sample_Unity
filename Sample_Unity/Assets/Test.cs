@@ -74,6 +74,12 @@ public class Test : MonoBehaviour {
 			this.gameObject.AddComponent<TestRECPlugin>();
 			Destroy (GetComponent ("Test" ));
 		}
+
+		if(GUI.Button(new Rect(5, 665, Screen.width - 10, 70),"AdTracking System" ))
+		{
+			this.gameObject.AddComponent<TestAdTrackingPlugin>();
+			Destroy (GetComponent ("Test" ));
+		}
 		
 		
 	}

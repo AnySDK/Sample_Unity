@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Plugins\script\AnySDK.cs" />
+     <Compile Include="Assets\Plugins\script\AnySDKAdTracking.cs" />
      <Compile Include="Assets\Plugins\script\AnySDKAds.cs" />
      <Compile Include="Assets\Plugins\script\AnySDKAnalytics.cs" />
      <Compile Include="Assets\Plugins\script\AnySDKCrash.cs" />
@@ -60,9 +61,9 @@
      <Compile Include="Assets\Plugins\script\AnySDKUser.cs" />
      <Compile Include="Assets\Plugins\script\AnySDKUtil.cs" />
      <None Include="Assets\Plugins\Android\res\layout\plugin_ads.xml" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\Plugins\Android\res\layout\plugin_login.xml" />
      <None Include="Assets\Plugins\Android\res\values\plugin_string.xml" />
-     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\Plugins\Android\res\values-en\plugin_string.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity4.70/Unity.app/Contents/UnityExtensions/Unity/GUISystem/4.7.0/Standalone/UnityEngine.UI.dll</HintPath>
