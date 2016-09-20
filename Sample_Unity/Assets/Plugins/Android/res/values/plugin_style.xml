@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<resources> 
+    <style name="plugin_anim_fade" parent="android:Theme.NoTitleBar.Fullscreen">  
+       <item name="android:windowAnimationStyle">@style/plugin_fade</item>  
+   </style>  
+  
+   <style name="plugin_fade" parent="@android:style/Animation.Activity">  
+       <item name="android:activityOpenEnterAnimation">@anim/plugin_fade_in</item>  
+       <item name="android:activityOpenExitAnimation">@anim/plugin_fade_out</item>  
+       <item name="android:activityCloseEnterAnimation">@anim/plugin_fade_in</item>  
+       <item name="android:activityCloseExitAnimation">@anim/plugin_fade_out</item>  
+   </style> 
+</resources>

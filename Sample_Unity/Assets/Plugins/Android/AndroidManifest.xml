@@ -14,7 +14,7 @@
         android:label="@string/app_name">
         <activity
             android:name="com.anysdk.framework.unity.AnySDKActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:theme="@style/plugin_anim_fade"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait">
             <intent-filter>
