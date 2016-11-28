@@ -98,16 +98,22 @@ namespace anysdk {
 		 */
 		void payForProduct() {
 			Dictionary<string, string> products = new Dictionary<string, string>();
-			products["Product_Price"] = "6";
-			products["Product_Id"] = "10";
-			products["Product_Name"] = "60钻石";
-			products["Server_Id"] = "1";
-			products["Product_Count"] = "1";
-			products["Role_Id"] = "10208";
-			products["Role_Name"] = "1";
-			products["Role_Grade"] = "1";
-			products["Role_Balance"] = "0";
-			products["EXT"] = "{\"OrderID\":10,\"Channel\":\"1\",\"Level\":\"1\",\"Gem\":\"0\"}";
+	        products["Product_Id"] = "1";
+	        products["Product_Name"] = "10元宝";
+	        products["Product_Price"] = "1";
+	        products["Product_Count"] = "1";
+	        products["Product_Desc"] = "gold";
+	        products["Coin_Name"] = "元宝";
+	        products["Coin_Rate"] = "10";
+	        products["Role_Id"] = "123456";
+	        products["Role_Name"] = "test";
+	        products["Role_Grade"] = "1";
+	        products["Role_Balance"] = "1";
+	        products["Vip_Level"] = "1";
+	        products["Party_Name"] = "test";
+	        products["Server_Id"] = "1";
+	        products["Server_Name"] = "test";
+	        products["EXT"] = "test";
 			_instance.payForProduct( products );
 		}
 		
