@@ -218,13 +218,17 @@ namespace anysdk {
 		void submitLoginGameRole() {
 			if( _instance.isFunctionSupported( "submitLoginGameRole" ) ) {
 				Dictionary<string, string> userInfo = new Dictionary<string, string>();
-				userInfo["roleId"] = "123456";
-				userInfo["roleName"] = "test";
-				userInfo["roleLevel"] = "10";
-				userInfo["zoneId"] = "123";
-				userInfo["zoneName"] = "test";
                 userInfo["dataType"] = "1";
-                userInfo["ext"] = "login";
+	            userInfo["roleId"] = "123456";
+	            userInfo["roleName"] = "test";
+	            userInfo["roleLevel"] = "1";
+	            userInfo["zoneId"] = "1";
+	            userInfo["zoneName"] = "test";
+	            userInfo["balance"] = "60";
+	            userInfo["partyName"] = "test";
+	            userInfo["vipLevel"] = "1";
+	            userInfo["roleCTime"] = "1480318110";
+	            userInfo["roleLevelMTime"] = "-1";
 				AnySDKParam param = new AnySDKParam(userInfo);
 				_instance.callFuncWithParam( "submitLoginGameRole", param );
 			}	
