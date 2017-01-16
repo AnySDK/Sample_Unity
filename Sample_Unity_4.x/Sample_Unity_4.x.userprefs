@@ -1,0 +1,26 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Plugins/script/AnySDKSocial.cs">
+    <Files>
+      <File FileName="Assets/Init.cs" Line="1" Column="1" />
+      <File FileName="Assets/TestUserPlugin.cs" Line="218" Column="31" />
+      <File FileName="Assets/Test.cs" Line="1" Column="1" />
+      <File FileName="Assets/TestAdsPlugin.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/Android/AndroidManifest.xml" Line="27" Column="1" />
+      <File FileName="Assets/TestAdTrackingPlugin.cs" Line="68" Column="4" />
+      <File FileName="Assets/Plugins/script/AnySDK.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDKUser.cs" Line="93" Column="1" />
+      <File FileName="Assets/TestPushPlugin.cs" Line="24" Column="1" />
+      <File FileName="Assets/Plugins/script/AnySDKAdTracking.cs" Line="69" Column="40" />
+      <File FileName="Assets/Plugins/script/AnySDKAnalytics.cs" Line="124" Column="32" />
+      <File FileName="Assets/TestSharePlugin.cs" Line="25" Column="1" />
+      <File FileName="Assets/TestRECPlugin.cs" Line="26" Column="1" />
+      <File FileName="Assets/TestSocialPlugin.cs" Line="100" Column="42" />
+      <File FileName="Assets/Plugins/script/AnySDKSocial.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
